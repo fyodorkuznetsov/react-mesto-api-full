@@ -38,6 +38,12 @@ app.use(bodyParser.json());
 
 app.use(requestLogger);
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 /*  Тут возможно, не стоило проверять пароль на валидность по длине, но пусть будет */
 app.post('/signin', celebrate({
   body: Joi.object().keys({
