@@ -3,11 +3,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/users.js');
 const cardRouter = require('./routes/cards.js');
 const NotFoundError = require('./errors/not-found-err');
 const { auth } = require('./middlewares/auth');
-const cors = require('cors');
+
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const {
@@ -16,7 +18,7 @@ const {
 
 const corsOptions = {
   origin: 'https://smith.students.nomoredomains.monster',
-}
+};
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -30,6 +32,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(cors(corsOptions));
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use(requestLogger);

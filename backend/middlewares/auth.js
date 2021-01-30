@@ -4,16 +4,13 @@ require('dotenv').config();
 
 const { JWT_SECRET } = process.env;
 
-const extractBearerToken = (header) => header.replace('Bearer ', '');
-
 /* eslint-disable consistent-return */
 module.exports.auth = (req, res, next) => {
-  const { authorization } = req.headers;
-  if (!authorization || !authorization.startsWith('Bearer ')) {
+  const { token } = req.cookies.token;
+  if (!token) {
     return next(new UnauthorizedError('Необходима авторизация'));
   }
 
-  const token = extractBearerToken(authorization);
   let payload;
 
   try {
