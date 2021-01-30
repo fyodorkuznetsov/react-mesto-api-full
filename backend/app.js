@@ -7,11 +7,16 @@ const userRouter = require('./routes/users.js');
 const cardRouter = require('./routes/cards.js');
 const NotFoundError = require('./errors/not-found-err');
 const { auth } = require('./middlewares/auth');
+const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const {
   login, createUser,
 } = require('./controllers/users.js');
+
+const corsOptions = {
+  origin: 'https://smith.students.nomoredomains.monster',
+}
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -22,6 +27,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
+
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 
