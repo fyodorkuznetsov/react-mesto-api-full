@@ -6,7 +6,7 @@ const { JWT_SECRET } = process.env;
 
 /* eslint-disable consistent-return */
 module.exports.auth = (req, res, next) => {
-  const { token } = req.cookies.token;
+  const { token } = req.cookies;
   if (!token) {
     return next(new UnauthorizedError('Необходима авторизация'));
   }
