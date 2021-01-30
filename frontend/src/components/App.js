@@ -47,7 +47,7 @@ function App() {
     {
       baseUrl: 'https://api.smith.students.nomoredomains.monster',
       headers: {
-        authorization: 'Bearer '.localStorage.getItem('jwt'),
+        authorization: 'Bearer ' + localStorage.getItem('jwt'),
         'Content-Type': 'application/json'
       }
     }
