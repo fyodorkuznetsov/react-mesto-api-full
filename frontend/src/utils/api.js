@@ -9,7 +9,8 @@ class Api {
       `${this._baseUrl}/users/me`,
       {
         method: 'GET',
-        headers: this._baseHeaders
+        headers: this._baseHeaders,
+        credentials: 'include'
       }
     ).then((res) => {
       if (res.ok) {
@@ -23,7 +24,8 @@ class Api {
     return fetch(`${this._baseUrl}/cards`,
       {
         method: 'GET',
-        headers: this._baseHeaders
+        headers: this._baseHeaders,
+        credentials: 'include'
       }
     )
       .then((res) => {
@@ -40,6 +42,7 @@ class Api {
       {
         method: 'PATCH',
         headers: this._baseHeaders,
+        credentials: 'include',
         body: JSON.stringify({
           name,
           about
@@ -61,6 +64,7 @@ class Api {
       {
         method: 'PATCH',
         headers: this._baseHeaders,
+        credentials: 'include',
         body: JSON.stringify({
           avatar
         })
@@ -81,6 +85,7 @@ class Api {
       {
         method: 'POST',
         headers: this._baseHeaders,
+        credentials: 'include',
         body: JSON.stringify({
           name,
           link
@@ -101,7 +106,8 @@ class Api {
       `${this._baseUrl}/cards/${cardId}`,
       {
         method: 'DELETE',
-        headers: this._baseHeaders
+        headers: this._baseHeaders,
+        credentials: 'include'
       }
     )
       .then((res) => {
@@ -116,10 +122,11 @@ class Api {
   likeAction(cardId, isLiked) {
     const type = isLiked ? 'DELETE' : 'PUT';
     return fetch(
-      `${this._baseUrl}/cards/likes/${cardId}`,
+      `${this._baseUrl}/cards/${cardId}/likes`,
       {
         method: type,
-        headers: this._baseHeaders
+        headers: this._baseHeaders,
+        credentials: 'include'
       }
     )
       .then((res) => {
@@ -132,4 +139,13 @@ class Api {
   }
 }
 
-export default Api;
+const apiInstance = new Api(
+  {
+    baseUrl: 'https://api.smith.students.nomoredomains.monster',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+);
+
+export default apiInstance;

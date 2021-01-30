@@ -11,7 +11,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import Api from '../utils/api';
+import apiInstance from '../utils/api';
 
 import Login from './Login';
 import Register from './Register';
@@ -43,42 +43,29 @@ function App() {
   /*стейт для блокировки отрисовки контента до проверки токена */
   const [tokenChecked, setTokenChecked] = React.useState(false);
 
-  const apiInstance = new Api(
-    {
-      baseUrl: 'https://api.smith.students.nomoredomains.monster',
-      headers: {
-        authorization: 'Bearer ' + localStorage.getItem('jwt'),
-        'Content-Type': 'application/json'
-      }
-    }
-  );
-
   const history = useHistory();
 
   const handleTokenCheck = () => {
-    if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt');
-      auth.checkToken(jwt)
-        .then((res) => {
-          if (res.data) {
-            if (!!res.data.email) {
-              setUserEmail(res.data.email);
-            }
-            setLoggedIn(true);
-            setTokenChecked(true);
-            history.push('/');
-          } else {
-            setLoggedIn(false);
-            localStorage.removeItem('jwt');
-            setTokenChecked(true);
+    auth.checkToken()
+      .then((res) => {
+        if (res.data) {
+          if (!!res.data.email) {
+            setUserEmail(res.data.email);
+          }
+          setLoggedIn(true);
+          setTokenChecked(true);
+          history.push('/');
+        } else {
+          setLoggedIn(false);
+          setTokenChecked(true);
+          if(history.location.pathname !== '/sign-up'){
             history.push('/sign-in');
           }
-        })
-        .catch(err => console.log(err));
-    } else {
-      setTokenChecked(true);
-    }
+        }
+      })
+      .catch(err => console.log(err));
   }
+
 
   React.useEffect(() => {
     handleTokenCheck();
@@ -87,26 +74,26 @@ function App() {
 
   React.useEffect(() => {
     apiInstance.getInitialCards().then((res) => {
-      setCards(res);
+      setCards(res.data);
     }).catch((err) => {
       console.log(err);
     });
-  }, []);
+  }, [loggedIn]);
 
   React.useEffect(() => {
     apiInstance.getUserInfo()
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [loggedIn]);
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
     apiInstance.likeAction(card._id, isLiked).then((newCard) => {
-      const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+      const newCards = cards.map((c) => c._id === card._id ? newCard.data : c);
       setCards(newCards);
     })
       .catch((err) => {
@@ -141,7 +128,7 @@ function App() {
   function handleUpdateUser(userData) {
     apiInstance.updateUserProfile(userData)
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -152,7 +139,7 @@ function App() {
   function handleUpdateAvatar(userData) {
     apiInstance.updateUserAvatar(userData.avatar)
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -163,7 +150,7 @@ function App() {
   function handleAddPlaceSubmit(newCard) {
     return apiInstance.addNewCard(newCard)
       .then((res) => {
-        setCards([res, ...cards]);
+        setCards([res.data, ...cards]);
         closeAllPopups();
         return true;
       })
@@ -196,11 +183,8 @@ function App() {
       return;
     }
     auth.login(email, password)
-      .then(data => {
-        if (data.token) {
-          localStorage.setItem('jwt', data.token);
+      .then(() => {
           history.push('/');
-        }
       })
       .catch(err => {
         console.log(err);
@@ -209,9 +193,7 @@ function App() {
 
   function handleLogout() {
     setLoggedIn(false);
-    if (localStorage.getItem('jwt')) {
-      localStorage.removeItem('jwt');
-    }
+
   }
 
   return (
@@ -220,12 +202,12 @@ function App() {
         <Header loggedIn={loggedIn} userEmail={userEmail} handleLogout={handleLogout} />
         <Switch>
           <ProtectedRoute component={Main} exact path="/" loggedIn={loggedIn} cards={cards} onCardDelete={handleCardDelete} onCardLike={handleCardLike} onEditProfile={() => { setIsEditProfileClick(true) }} onAddPlace={() => { setIsAddPlaceClick(true) }} onEditAvatar={() => { setIsEditAvatarClick(true) }} onCardPictureClick={handlePictureClick} />
-          <Route path="/sign-in">
-            <Login onLogin={handleLogin} />
-          </Route>
           <Route path="/sign-up">
             <Register onRegister={handleRegister} />
             <InfoToolTip isOpened={isInfoToolTipOpened} resultText={registerMessage} isSuccess={registerSuccessfull} onClose={closeAllPopups} />
+          </Route>
+          <Route path="/sign-in">
+            <Login onLogin={handleLogin} />
           </Route>
         </Switch>
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />

@@ -10,8 +10,8 @@ function Card(props) {
   const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
-    setIsOwn(props.card.owner._id === currentUser._id);
-    setIsLiked(props.card.likes.some(i => i._id === currentUser._id));
+    setIsOwn(props.card.owner === currentUser._id);
+    setIsLiked(props.card.likes.some(i => i === currentUser._id));
   }, [currentUser, props.card]);
 
   function handleClick() {
