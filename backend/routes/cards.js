@@ -6,9 +6,6 @@ const {
 } = require('../controllers/cards.js');
 
 cardRouter.post('/cards', celebrate({
-  params: Joi.object().keys({
-    cardId: Joi.string().required().alphanum().length(24),
-  }),
   query: Joi.object().keys({
     _id: Joi.string().required().alphanum().length(24),
   }),
