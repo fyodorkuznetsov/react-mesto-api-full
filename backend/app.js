@@ -17,7 +17,7 @@ const {
 } = require('./controllers/users.js');
 
 const corsOptions = {
-  origin: 'https://smith.students.nomoredomains.monster',
+  origin: ['https://smith.students.nomoredomains.monster', 'http://smith.students.nomoredomains.monster'],
   credentials: true,
 };
 
