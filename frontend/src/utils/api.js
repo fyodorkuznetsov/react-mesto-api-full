@@ -132,14 +132,4 @@ class Api {
   }
 }
 
-const apiInstance = new Api(
-  {
-    baseUrl: 'https://api.smith.students.nomoredomains.monster',
-    headers: {
-      authorization: '01de46de-ea96-4368-9287-db88b2ef4480',
-      'Content-Type': 'application/json'
-    }
-  }
-);
-
-export default apiInstance;
+export default Api;

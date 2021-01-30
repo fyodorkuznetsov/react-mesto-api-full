@@ -11,7 +11,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import apiInstance from '../utils/api';
+import Api from '../utils/api';
 
 import Login from './Login';
 import Register from './Register';
@@ -42,6 +42,16 @@ function App() {
 
   /*стейт для блокировки отрисовки контента до проверки токена */
   const [tokenChecked, setTokenChecked] = React.useState(false);
+
+  const apiInstance = new Api(
+    {
+      baseUrl: 'https://api.smith.students.nomoredomains.monster',
+      headers: {
+        authorization: 'Bearer '.localStorage.getItem('jwt'),
+        'Content-Type': 'application/json'
+      }
+    }
+  );
 
   const history = useHistory();
 
