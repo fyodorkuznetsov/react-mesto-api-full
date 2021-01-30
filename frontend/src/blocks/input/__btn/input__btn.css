@@ -1,0 +1,29 @@
+.input__btn{
+  background: #000000;
+  color: #fff;
+  width: 100%;
+  border-radius: 2px;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  outline: none;
+  border: none;
+  padding: 14px 0 13px;
+  margin-top: 27px;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.input__btn:hover{
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 550px){
+  .input__btn{
+    font-size: 14px;
+    line-height: 17px;
+    margin-top: 25px;
+    padding: 12px 0 11px;
+  }
+}

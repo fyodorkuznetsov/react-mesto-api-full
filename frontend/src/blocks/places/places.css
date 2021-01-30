@@ -1,0 +1,27 @@
+@import url(./__place/places__place.css);
+@import url(./__picture/places__picture.css);
+@import url(./__title-wrap/places__title-wrap.css);
+@import url(./__picture-wrap/places__picture-wrap.css);
+@import url(./__title/places__title.css);
+@import url(./__like/places__like.css);
+@import url(./__like-counter/places__like-counter.css);
+@import url(./__like-btn/places__like-btn.css);
+@import url(./__remove/places__remove.css);
+
+.places{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 22px 18px;
+}
+
+@media screen and (max-width: 700px){
+  .places{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 500px){
+  .places{
+    grid-template-columns: 1fr;
+  }
+}

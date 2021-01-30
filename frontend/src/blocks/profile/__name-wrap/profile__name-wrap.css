@@ -1,0 +1,4 @@
+.profile__name-wrap{
+  display: flex;
+  align-items: baseline;
+}

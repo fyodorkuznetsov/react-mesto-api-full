@@ -1,0 +1,24 @@
+.places__remove{
+  border: none;
+  position: absolute;
+  height: 18px;
+  width: 19px;
+  right: 14px;
+  top: 19px;
+  background: url(../../../images/remove-icon.svg) center no-repeat;
+  background-size: 100%;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.places__remove_hidden{
+  display: none;
+}
+
+.places__remove:hover{
+  opacity: 0.6;
+}
+
+.places__remove:focus{
+  outline: none;
+}

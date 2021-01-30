@@ -1,0 +1,17 @@
+.places__like-btn{
+  border: none;
+  background: url(../../../images/like.svg) center no-repeat;
+  background-size: 100%;
+  cursor: pointer;
+  height: 20px;
+  width: 21px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.places__like-btn:hover{
+  opacity: 0.6;
+}
+
+.places__like-btn:focus{
+  outline: none;
+}

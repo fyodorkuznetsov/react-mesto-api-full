@@ -1,0 +1,15 @@
+@import url(./__title/auth-container__title.css);
+@import url(./__link/auth-container__link.css);
+
+.auth-container{
+  width: 358px;
+  margin: 0 auto;
+  padding-top: 60px;
+  flex: 1 0 auto;
+}
+
+@media screen and (max-width: 500px){
+  .auth-container{
+    width: 100%;
+  }
+}

@@ -1,0 +1,12 @@
+.input__field-error{
+  display: block;
+  min-height: 15px;
+  margin-bottom: 3px;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ff0000;
+  opacity:0;
+  visibility:hidden;
+  transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}

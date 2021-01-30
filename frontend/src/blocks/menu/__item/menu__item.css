@@ -1,0 +1,20 @@
+.menu__item{
+  color: #fff;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  line-height: 22px;
+  text-decoration: none;
+  margin-left: 24px;
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+@media screen and (max-width:625px){
+  .menu__item{
+    display: inline-block;
+    max-width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}

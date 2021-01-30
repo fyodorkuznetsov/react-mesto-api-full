@@ -1,0 +1,15 @@
+.page{  
+  margin: 0 auto;
+  max-width: 882px;
+  min-width: 320px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 900px){
+  .page{
+    padding: 0 19px;
+  }
+}
