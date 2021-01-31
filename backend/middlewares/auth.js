@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../errors/unauthorized-err');
 require('dotenv').config();
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET = 'eb28135ebcfc17eb28135ebcfc17eb28135ebcfc17' } = process.env;
 
 /* eslint-disable consistent-return */
 module.exports.auth = (req, res, next) => {

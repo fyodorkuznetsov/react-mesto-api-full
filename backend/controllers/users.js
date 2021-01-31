@@ -10,7 +10,7 @@ const UnauthorizedError = require('../errors/unauthorized-err');
 
 require('dotenv').config();
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET = 'eb28135ebcfc17eb28135ebcfc17eb28135ebcfc17' } = process.env;
 
 module.exports.createUser = (req, res, next) => {
   const {
@@ -27,8 +27,7 @@ module.exports.createUser = (req, res, next) => {
       name,
       about,
       avatar,
-    })
-      .orFail(new DuplicateDataError('Пользователь с таким e-mail уже существует')))
+    }))
     .then((user) => {
       res.status(201).send({
         data: {
@@ -41,8 +40,8 @@ module.exports.createUser = (req, res, next) => {
       });
     })
     .catch((err) => {
-      if (err.name === 'DuplicateDataError') {
-        next(err);
+      if (err.name === 'MongoError' && err.code === 11000) {
+        next(new DuplicateDataError('Пользователь с таким e-mail уже существует'));
       } else if (err.name === 'ValidationError') {
         next(new WrongDataError('Переданы некорректные данные для создания пользователя'));
       } else {
