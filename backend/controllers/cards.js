@@ -25,36 +25,27 @@ module.exports.sendCardsData = (req, res, next) => {
 
 module.exports.deleteCard = (req, res, next) => {
   Card.findOneAndRemove({ _id: req.params.cardId, owner: req.user._id })
+    .orFail(new NotFoundError('У вас нет карточки с таким id'))
     .then((card) => {
-      if (card !== null) {
-        res.send({ data: card });
-      } else {
-        throw new NotFoundError('У вас нет карточки с таким id');
-      }
+      res.send({ data: card });
     })
     .catch(next);
 };
 
 module.exports.likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
+    .orFail(new NotFoundError('Нет карточки с таким id'))
     .then((card) => {
-      if (card !== null) {
-        res.send({ data: card });
-      } else {
-        throw new NotFoundError('Нет карточки с таким id');
-      }
+      res.send({ data: card });
     })
     .catch(next);
 };
 
 module.exports.dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
+    .orFail(new NotFoundError('Нет карточки с таким id'))
     .then((card) => {
-      if (card !== null) {
-        res.send({ data: card });
-      } else {
-        throw new NotFoundError('Нет карточки с таким id');
-      }
+      res.send({ data: card });
     })
     .catch(next);
 };

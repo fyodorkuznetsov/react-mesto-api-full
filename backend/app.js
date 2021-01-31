@@ -5,6 +5,8 @@ const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 const userRouter = require('./routes/users.js');
 const cardRouter = require('./routes/cards.js');
 const NotFoundError = require('./errors/not-found-err');
@@ -21,6 +23,11 @@ const corsOptions = {
   credentials: true,
 };
 
+const limiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30, // 30 запросов в минуту
+});
+
 const { PORT = 3000 } = process.env;
 const app = express();
 
@@ -32,10 +39,10 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
 app.use(cors(corsOptions));
-
+app.use(limiter);
+app.use(helmet());
 app.use(cookieParser());
 app.use(bodyParser.json());
-
 app.use(requestLogger);
 
 app.get('/crash-test', () => {

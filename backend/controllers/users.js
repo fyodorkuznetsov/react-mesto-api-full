@@ -58,24 +58,18 @@ module.exports.getUserList = (req, res, next) => {
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.params.id)
+    .orFail(new NotFoundError('Нет пользователя с таким id'))
     .then((user) => {
-      if (user !== null) {
-        res.send({ data: user });
-      } else {
-        throw new NotFoundError('Нет пользователя с таким id');
-      }
+      res.send({ data: user });
     })
     .catch(next);
 };
 
 module.exports.getProfile = (req, res, next) => {
   User.findById(req.user._id)
+    .orFail(new NotFoundError('Ваш профиль не найден'))
     .then((user) => {
-      if (user !== null) {
-        res.send({ data: user });
-      } else {
-        throw new NotFoundError('Ваш профиль не найден');
-      }
+      res.send({ data: user });
     })
     .catch(next);
 };
@@ -83,12 +77,9 @@ module.exports.getProfile = (req, res, next) => {
 module.exports.updateProfile = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
+    .orFail(new NotFoundError('Ваш пользователь не найден'))
     .then((user) => {
-      if (user !== null) {
-        res.send({ data: user });
-      } else {
-        throw new NotFoundError('Ваш пользователь не найден');
-      }
+      res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -102,12 +93,9 @@ module.exports.updateProfile = (req, res, next) => {
 module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
+    .orFail(new NotFoundError('Ваш пользователь не найден'))
     .then((user) => {
-      if (user !== null) {
-        res.send({ data: user });
-      } else {
-        throw new NotFoundError('Ваш пользователь не найден');
-      }
+      res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -127,7 +115,7 @@ module.exports.login = (req, res, next) => {
         maxAge: 3600000,
         httpOnly: true,
       })
-        .send({});
+        .send({ token });
     })
     .catch((err) => {
       next(new UnauthorizedError(err.message));
