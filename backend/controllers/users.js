@@ -28,9 +28,16 @@ module.exports.createUser = (req, res, next) => {
       about,
       avatar,
     }))
-    .select('-password')
     .then((user) => {
-      res.status(201).send({ data: user });
+      res.status(201).send({
+        data: {
+          _id: user._id,
+          email: user.email,
+          name: user.name,
+          about: user.about,
+          avatar: user.avatar,
+        },
+      });
     })
     .catch((err) => {
       if (err.name === 'MongoError' && !!err.keyValue.email) {
