@@ -27,7 +27,8 @@ module.exports.createUser = (req, res, next) => {
       name,
       about,
       avatar,
-    }))
+    })
+      .orFail(new DuplicateDataError('Пользователь с таким e-mail уже существует')))
     .then((user) => {
       res.status(201).send({
         data: {
@@ -40,8 +41,8 @@ module.exports.createUser = (req, res, next) => {
       });
     })
     .catch((err) => {
-      if (err.name === 'MongoError' && !!err.keyValue.email) {
-        next(new DuplicateDataError('Пользователь с таким e-mail уже существует'));
+      if (err.name === 'DuplicateDataError') {
+        next(err);
       } else if (err.name === 'ValidationError') {
         next(new WrongDataError('Переданы некорректные данные для создания пользователя'));
       } else {
